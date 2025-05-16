@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Special Love Notes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #ffe6e9;
+      font-family: 'Poppins', sans-serif;
+    }
+    .heart-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .heart {
+      position: absolute;
+      bottom: 0;
+      width: 20px;
+      height: 20px;
+      background-color: #ff4d6d;
+      transform: rotate(-45deg);
+      animation: floatUp 8s linear infinite;
+      opacity: 0.7;
+      border: 1px solid black;
+    }
+    .heart::before, .heart::after {
+      content: '';
+      width: 20px;
+      height: 20px;
+      background-color: #ff4d6d;
+      border-radius: 50%;
+      position: absolute;
+    }
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+    .heart::after {
+      top: 0;
+      left: 10px;
+    }
+    @keyframes floatUp {
+      to {
+        transform: translateY(-100vh) rotate(-45deg);
+        opacity: 0;
+      }
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .box {
+      background-color: #ec4e66b9;
+      color: #8b0000;
+      padding: 40px;
+      border-radius: 30px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+    }
+    h1 {
+      font-size: 24px;
+      margin: 10px;
+      border: none;
+      color: #7f0000;
+    }
+    button {
+      background-color: #8b0000;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #b30000;
+    }
+    #note {
+      margin-top: 20px;
+      font-size: 24px;
+      color: #8b0000;
+      font-family: 'Great Vibes', cursive;
+      animation: fadeIn 1s ease-in;
+      background-color: #ffe6e9;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    #nameInput {
+      margin-bottom: 20px;
+      padding: 10px;
+      border-radius: 20px;
+      border: 1px solid #8b0000;
+      font-size: 16px;
+    }
+    .hidden {
+      display: none;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <audio autoplay loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mp3">
+  </audio>
+
+  <div class="heart-container"></div>
+  <div class="container">
+    <div class="box">
+      <h1>💌 Your Daily Love Note 💌</h1>
+      <input id="nameInput" type="text" placeholder="Enter your love's name" />
+      <button id="generateNote">Open Your Love Note</button>
+      <div id="note" class="hidden"></div>
+    </div>
+  </div>
+
+  <script>
+    const notes = [
+      "You have the most beautiful smile! 😊",
+      "You make every day feel special just by being you. 💕",
+      "I love the way your eyes light up when you laugh. ✨",
+      "You're the human version of my comfort playlist — all my favorites in one!.🎵🥰",
+      "You are so incredibly thoughtful and caring. 💗",
+      "If you were a vegetable, you’d be a cute-cumber!.🥒😍",
+      "Being with you makes everything better. 🥰",
+      "Your laughter is my favorite sound.😉",
+      "You are so incredibly thoughtful and caring. 💗",
+      "I’d share my fries with you. And that’s true love!.🍟💖",
+      "You're like a cloud — fluffy, unpredictable, and occasionally dramatic!. ☁️😂",
+      "You're my favorite weirdo, and I wouldn't trade you for all the pizza in the world!. 🍕❤️", 
+      "You're like my favorite song — I could listen to you all day, and I still wouldn't get bored!.🎵😍",
+      "You’re like a human meme — endlessly entertaining!.😂❤️",
+     "You are my sunshine on a cloudy day ☀️.",
+      "I’m so lucky to have you in my life 🌹.",
+      "I’d choose you over pizza. And that’s saying a lot. 🍕💕",
+      "Every moment with you is my favorite moment 💖.",
+      "If kisses were snowflakes, I’d send you a blizzard. ❄️😘",
+      "My favorite hobby? Thinking about you. All. The. Time. 🥰", 
+      "I wish I could teleport right into your arms. 💫",
+      "I love you more than coffee. And that’s saying a latte! ☕❤️",
+      "You’re my favorite notification, always lighting up my day. 📲💕",
+      "Roses are red, my face is too, that only happens when I'm with you.. 💓",
+      "I fall more in love with you every single day 💕.",
+      "You’re like my favorite dessert — I just can’t get enough of you. 🍰",
+      "Home isn’t a place, it’s wherever you are. 🏡",
+      "You make my world brighter just by being in it 🌎.",
+      "You're the best part of my day, every day 🥰.",
+      "Loving you is my favorite thing to do. 💕",
+      "You are dangerously addictive, and I don't want a cure. 😘",
+      "I'm kinda jealous how your phone gets to hold your hand all day and I don't..😔",
+      "You're mine. Every heartbeat, every thought — all mine. And I won't share. 💋",
+      "Don't you dare forget who you belong to. You're mine. 🔒",
+      "I see the way people look at you. But remember, you're taken. By me. 💘",
+      "I dare you to go a day without thinking about me. Spoiler: You can't. 💞",
+      "No one will ever love you like I do. You're my one and only, and I intend to keep it that way. 💖",
+      "You better not even think of giving that smile to anyone else. It's mine. 💕",
+      "I will be the only name your heart whispers, now and forever. 💓",
+      "I’m not jealous, I’m just extremely possessive. You’re mine and I make no apologies for that. 🔥",
+      "The thought of anyone else having you? Nope. Not happening.🥰",
+      "You are mine. Body, soul, and heart. And I won't have it any other way. 💕",
+      "I'm not clingy, I just want to be wherever you are. 🧸🚶‍♂️🚶‍♀️",
+      "You're the reason my phone battery dies faster. 😂🔋❤️",
+      "Just a reminder: You’re doing amazing, and I’m proud of you. 🌟😘",
+      "You're the “aww” to my chaos. 🐥🔥",
+      "You’re my favorite risk I ever took. 🎲💘",
+      "You're the sweetest “what if” that became my reality. 🍬🌠",
+      "You snore like a bear but I’d still choose you every night .🐻💤",
+      "I bet you taste better than my favorite dessert. 🍰😋"
+
+    ];
+
+    const generateNoteButton = document.getElementById('generateNote');
+    const noteDisplay = document.getElementById('note');
+    const nameInput = document.getElementById('nameInput');
+
+    generateNoteButton.addEventListener('click', () => {
+        if (!generateNoteButton || !noteDisplay || !nameInput) {
+    console.error("One or more elements not found");
+    return;
+  }
+      const name = nameInput.value.trim() || 'Love';
+      const randomNote = notes[Math.floor(Math.random() * notes.length)];
+      noteDisplay.textContent = `${name}, ${randomNote}`;
+      noteDisplay.classList.remove('hidden');
+    });
+
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.style.left = `${Math.random() * 100}vw`;
+      heart.style.animationDuration = `${Math.random() * 3 + 5}s`;
+      document.querySelector('.heart-container').appendChild(heart);
+      console.log('Heart created');
+      setTimeout(() => heart.remove(), 8000);
+    }
+    setInterval(createHeart, 300);
+  </script>
+</body>
+</html>
